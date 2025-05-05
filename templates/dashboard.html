@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background: url('https://depositphotos-blog.s3.eu-west-1.amazonaws.com/uploads/2017/07/Soothing-nature-backgrounds-2.webp') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            z-index: 1;
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            width: 100%;
+            padding: 20px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .balance {
+            font-size: 36px;
+            margin: 10px 0;
+        }
+        .summary-box {
+            display: flex;
+            justify-content: space-around;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-item h3 {
+            margin: 5px 0;
+        }
+        .summary-item.income h3 {
+            color: green;
+        }
+        .summary-item.expense h3 {
+            color: red;
+        }
+        .history {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .transaction {
+            background: #f7f7f7;
+            padding: 10px;
+            margin: 5px 0;
+            border-right: 4px solid green;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .transaction.expense {
+            border-right: 4px solid red;
+        }
+        .transaction span {
+            flex: 1;
+        }
+        .transaction a.edit-btn {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-size: 12px;
+        }
+        .transaction a.edit-btn:hover {
+            background-color: #45a049;
+        }
+        .add-transaction {
+            margin-top: 30px;
+        }
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.button:hover {
+            background-color: #45a049;
+        }
+        .logout {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .logout a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        #chart-container {
+            margin: 30px auto;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="logout">
+            Welcome, {{ current_user.first_name }} | <a href="/logout">Logout</a>
+        </div>
+        <h1>Expense Tracker</h1>
+        <div class="balance">
+            YOUR BALANCE<br>
+            ${{ balance }}
+        </div>
+        <div class="summary-box">
+            <div class="summary-item income">
+                <p>INCOME</p>
+                <h3>${{ income }}</h3>
+            </div>
+            <div class="summary-item expense">
+                <p>EXPENSE</p>
+                <h3>${{ expenses }}</h3>
+            </div>
+        </div>
+
+        <div id="chart-container">
+            <canvas id="financeChart"></canvas>
+        </div>
+
+        <div class="history">
+            <h3>History</h3>
+            {% for t in transactions %}
+                <div class="transaction {% if t.type == 'expense' %}expense{% endif %}">
+                    <span>{{ t.category }}: {% if t.type == 'income' %}+{% else %}-{% endif %}${{ t.amount }}</span>
+                    <a href="/edit-transaction/{{ t.id }}" class="edit-btn">Edit</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="add-transaction">
+            <a href="/add-transaction" class="button">Add Transaction</a>
+        </div>
+    </div>
+
+    <!-- Chart.js script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        const financeChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Income', 'Expenses'],
+                datasets: [{
+                    label: 'Finance Overview',
+                    data: [{{ income }}, {{ expenses }}],
+                    backgroundColor: ['#4CAF50', '#f44336'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

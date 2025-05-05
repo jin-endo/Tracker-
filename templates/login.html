@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+        }
+        .left {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        .right {
+            flex: 1;
+            position: relative;
+            background: url('https://th.bing.com/th/id/R.497f911126e29d0bed3ac07527d623b1?rik=VySXbnhk%2bzuIRw&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2f6%2f4%2ff%2f531090.jpg&ehk=q%2bfkoHEtdieISxg1O%2bhizQNeobIVRE4%2fIMpOvYgscOA%3d&risl=&pid=ImgRaw&r=0') no-repeat center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: 1;
+        }
+        .text-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 80%;
+            color: white; /* Ensure all text is white */
+        }
+        .text-content h2, .text-content p {
+            color: white;
+        }
+        form {
+            width: 100%;
+            max-width: 300px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        p {
+            margin-top: 10px;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <h2>Login</h2>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Welcome back! <a href="/register">Don't have an account? Sign up here</a></p>
+    </div>
+    <div class="right">
+        <div class="overlay"></div>
+        <div class="text-content">
+            <h2>Check your Status</h2>
+            <p>It's easy to track your income, expenses, and see everything at a glance.</p>
+        </div>
+    </div>
+</body>
+</html>
